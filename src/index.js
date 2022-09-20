@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom/client';
 // https://create-react-app.dev/docs/adding-bootstrap/
 import 'bootstrap/dist/css/bootstrap.css';
 
+//Import App react component from App.js
 import App from './App';
-import Personform from './components/Person-form';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    <Personform />
   </React.StrictMode>
 );
 

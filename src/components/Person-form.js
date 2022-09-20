@@ -1,32 +1,33 @@
-// Start with UPPERCASE letter when naming react components
-
 import { useState } from "react";
 
-function Personform() {
-    //UseState return an array of 2 elements
+//Implementation of a 'controlled component'
+
+// Start with UPPERCASE letter when naming react components
+//The props is actually a function
+function Personform(props) {    
+    const handleCreatePerson = props.addNewPersonToList;
+
+    //UseState return an array of 2 elements, hook it up :)
     const [firstName, setFirstName] = useState("Default FirstName");
     const [secondName, setSecondName] = useState("Default SecondName");
     const [age, setAge] = useState(0);
     const [nationality, setNationality] = useState("Default Nationality");
-    const [email, setEmail] = useState("Default Email");
+    const [email, setEmail] = useState("Default@Email.se");
 
     
     const handleSubmit = (e) => {
-        //Prevent default refershing of paga
+        //Prevent default refreasing of page
         e.preventDefault();
-
-        //Save the data inputed in form
-        const inputedFormData = {
-            firstName, secondName, age, nationality, email
-        };
-
-        console.log(inputedFormData);
+        console.log("Start - Handle submit hit!!!");
+        handleCreatePerson(firstName, secondName, age, nationality, email);
+        console.log("End - Handle submit hit!!!");
     }
 
     return (
         
-        //<form method="post" class="form-control">          
-        <form onSubmit={handleSubmit} className="form-control">          
+        //Will invoke the handleSubmit function      
+        // <form onSubmit={handleSubmit} className="form-control">
+        <form onSubmit={ handleSubmit } className="form-control">
             <h2>Insert Person data</h2>
 
           <div className="form-group row">
@@ -69,9 +70,9 @@ function Personform() {
             </div>
           </div>
           
-          <input type="submit" value="Add a Person" className="btn btn-primary" />
-        
+          <input type="submit" value="Add a Person" className="btn btn-primary" />                  
         </form>        
     )};
 
+//Export our component so we can use it in other files
 export default Personform;    
