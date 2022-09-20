@@ -56,7 +56,7 @@ function App() {
           <input type="email" className="form-control" />
         </div>
 
-        <input type="submit" value="Add a Person" className="btn btn-primary" />
+        <input type="submit" value="Add a Person" class="btn btn-danger" />
 
         
         </form>         
