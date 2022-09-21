@@ -18,9 +18,9 @@ function Personform(props) {
     const handleSubmit = (e) => {
         //Prevent default refreasing of page
         e.preventDefault();
-        console.log("Start - Handle submit hit!!!");
+        //console.log("Before - Handle submit hit!!!");
         handleCreatePerson(firstName, secondName, age, nationality, email);
-        console.log("End - Handle submit hit!!!");
+        //console.log("After - Handle submit hit!!!");
     }
 
     return (
