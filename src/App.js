@@ -16,22 +16,22 @@ function App() {
 
   //Hook it up - An array of persons
   const [persons, setPersons] = useState([
-    // {
-    //     id : 1, 
-    //     _firstName : "Niranchaya", 
-    //     _secondName : "Suay panraya",
-    //     _age : 37,
-    //     _nationality : "Thai",
-    //     _email : "frugan@best.com"
-    // },
-    // {
-    //     id : 2,
-    //     _firstName : "Alexander", 
-    //     _secondName : "Hajen",
-    //     _age : 10,
-    //     _nationality : "Swedish",
-    //     _email : "tuffaste@killen.se"
-    // }
+    {
+        id : 1, 
+        _firstName : "Niranchaya", 
+        _lastName : "Suay panraya",
+        _age : 37,
+        _nationality : "Thai",
+        _email : "frugan@best.com"
+    },
+    {
+        id : 2,
+        _firstName : "Alexander", 
+        _lastName : "Hajen",
+        _age : 10,
+        _nationality : "Swedish",
+        _email : "tuffaste@killen.se"
+    }
     
 ]);
 
