@@ -9,7 +9,7 @@ function Personform(props) {
 
     //UseState return an array of 2 elements, hook it up :)
     const [firstName, setFirstName] = useState("Default FirstName");
-    const [secondName, setSecondName] = useState("Default SecondName");
+    const [lastName, setLastName] = useState("Default LastName");
     const [age, setAge] = useState(0);
     const [nationality, setNationality] = useState("Default Nationality");
     const [email, setEmail] = useState("Default@Email.se");
@@ -19,7 +19,7 @@ function Personform(props) {
         //Prevent default refreasing of page
         e.preventDefault();
         //console.log("Before - Handle submit hit!!!");
-        handleCreatePerson(firstName, secondName, age, nationality, email);
+        handleCreatePerson(firstName, lastName, age, nationality, email);
         //console.log("After - Handle submit hit!!!");
     }
 
@@ -38,10 +38,10 @@ function Personform(props) {
           </div>
 
           <div className="form-group row">
-            <label htmlFor="labelSecondName" className="col-sm-2 col-form-label">Second Name</label>
+            <label htmlFor="labelLastName" className="col-sm-2 col-form-label">Last Name</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="inputSecondName" 
-              value={secondName} onChange={(e) => setSecondName(e.target.value)} />
+              <input type="text" className="form-control" id="inputLastName" 
+              value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </div>
           </div>
 

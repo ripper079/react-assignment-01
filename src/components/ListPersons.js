@@ -38,7 +38,7 @@ function ListAllPersons(props) {         //Alt 2
             <div className="row">
                 <div className="col"><strong>List ID</strong></div>
                 <div className="col"><strong>FirstName</strong></div>
-                <div className="col"><strong>SecondName</strong></div>
+                <div className="col"><strong>LastName</strong></div>
                 <div className="col"><strong>Age</strong></div>
                 <div className="col"><strong>Nationality</strong></div>
                 <div className="col"><strong>Email</strong></div>                

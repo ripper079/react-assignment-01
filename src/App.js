@@ -36,13 +36,13 @@ function App() {
 ]);
 
 
-function handleCreatePerson(firstName, secondName, age, nationality, email) 
+function handleCreatePerson(firstName, lastName, age, nationality, email) 
 {
   // console.log("Inside handleCreatePerson...");
   let aNewPerson = {
     id : ++idNumber,
     _firstName : firstName, 
-    _secondName : secondName,
+    _lastName : lastName,
     _age : age,
     _nationality : nationality,
     _email : email    
