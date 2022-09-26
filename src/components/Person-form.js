@@ -26,7 +26,6 @@ function Personform(props) {
     return (
         
         //Will invoke the handleSubmit function      
-        // <form onSubmit={handleSubmit} className="form-control">
         <form onSubmit={ handleSubmit } className="form-control">
             <h2>Insert Person data</h2>
 

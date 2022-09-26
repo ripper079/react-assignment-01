@@ -48,7 +48,8 @@ function ListAllPersons(props) {         //Alt 2
             {persons.map((e) => ( 
 
                 // Mini bug - each child have a unique prop, assignment requirement
-                <PersonDataLine apersonrecord={e} />
+                // <PersonDataLine apersonrecord={e} />
+                <PersonDataLine key={e.id} apersonrecord={e} />
 
                 
                 //Maybe this better??? Toogle between 2 versions

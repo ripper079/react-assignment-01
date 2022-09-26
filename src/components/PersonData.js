@@ -1,7 +1,8 @@
 function PersonDataLine(props){    
     return (
-        <div className="row" key={ props.apersonrecord.id }>
+        // <div className="row" key={ props.apersonrecord.id }>
 
+        <div className="row">
             <div className="col">{ props.apersonrecord.id } </div>
             <div className="col">{ props.apersonrecord._firstName } </div>        
             <div className="col">{ props.apersonrecord._secondName }</div>
