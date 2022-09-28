@@ -13,11 +13,12 @@ import ListAllPersons from './components/ListPersons';
 import Home from './components/Home';
 import PersonDetail from './components/PersonDetail';
 import NotFound from './components/NotFound';
-import LoginIn from './components/LoginForm';
+import Login from './components/LoginForm';
+import Logout from './components/Logout';
 
-//Generating 'correct' id numbers
-let idNumber = 2;
-
+//Generating 'correct' id numbers, toogle between this to to get correct behaviour
+let idNumber = 0;       
+//let idNumber = 2;
 
 //Test of new prospect - Need to be just before the function App()
 //Purpose to avoid 'props drilling'
@@ -32,25 +33,29 @@ function App() {
   //Loginstatus and userinfo
   const [isLoggedIn, setLogin] = useState(false);
   const [nameOfLoggedIn, setNameOfLoggedIn] = useState(null);
+  const [isLoginFail, setLoginFail] = useState(false);
 
   //Hook it up - An array of persons
+  //Make SURE to set idNumber correct
+  //  - When commented out use idNumber = 0
+  //  - When NOT commented out use idNumber = 2
   const [persons, setPersons] = useState([
-    {
-        id : 1, 
-        _firstName : "Niranchaya", 
-        _lastName : "Suay panraya",
-        _age : 37,
-        _nationality : "Thai",
-        _email : "frugan@best.com"
-    },
-    {
-        id : 2,
-        _firstName : "Alexander", 
-        _lastName : "Hajen",
-        _age : 10,
-        _nationality : "Swedish",
-        _email : "tuffaste@killen.se"
-    }    
+    // {
+    //     id : 1, 
+    //     _firstName : "Niranchaya", 
+    //     _lastName : "Suay panraya",
+    //     _age : 37,
+    //     _nationality : "Thai",
+    //     _email : "frugan@best.com"
+    // },
+    // {
+    //     id : 2,
+    //     _firstName : "Alexander", 
+    //     _lastName : "Hajen",
+    //     _age : 10,
+    //     _nationality : "Swedish",
+    //     _email : "tuffaste@killen.se"
+    // }    
 ]);
 
 //Adding a new person
@@ -65,11 +70,28 @@ function handleCreatePerson(firstName, lastName, age, nationality, email)
     _nationality : nationality,
     _email : email    
   };
-  
+    
   const newPersonsList = persons.map((x) => x);
   newPersonsList.push(aNewPerson);
   setPersons(newPersonsList);    
 }
+
+function handleLoginPerson(userName){
+  //console.log("Inside handleLoginPerson...for user=" + userName);
+  setLogin(true);
+  setNameOfLoggedIn(userName);
+  setLoginFail(false);
+  
+}
+
+function handleLogoutPerson(){
+  //console.log("Inside handleLogoutPerson...");
+  setLogin(false);
+  setNameOfLoggedIn(null);
+  setLoginFail(false);
+}
+
+
 
   return (
     <div className="App">
@@ -77,7 +99,10 @@ function handleCreatePerson(firstName, lastName, age, nationality, email)
       
       <a href={linkToReactRouter} target="_blank" rel="noopener noreferrer">React Router</a>
         <p><strong>React</strong> Powered Application!</p>        
-        <p>{ titleAssignment }</p>                                       
+        <p>{ titleAssignment }</p>
+        { isLoggedIn && <p>'{nameOfLoggedIn}' is logged in</p> }
+        { isLoginFail && <p>A FAILED login attempt</p> }
+        
       </header>
       <nav>
         <h3>Big Data @ People</h3>
@@ -86,10 +111,10 @@ function handleCreatePerson(firstName, lastName, age, nationality, email)
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/personlist">List all persons</Link>
+          {isLoggedIn && <Link to="/personlist">List all persons</Link>}
           </li>
           <li>
-            <Link to="/addperson">Add a person</Link>
+            {isLoggedIn && <Link to="/addperson">Add a person</Link>}
           </li>    
           <li>
             {isLoggedIn && <Link to="/logout">Logut</Link>}
@@ -105,7 +130,8 @@ function handleCreatePerson(firstName, lastName, age, nationality, email)
             <Route path ="/persondetails/:id" element={<PersonDetail />} />
             <Route path ="/personlist" element={<ListAllPersons listOfAllPersons={ persons } />} />           
             <Route path ="/addperson" element={<Personform addNewPersonToList={handleCreatePerson} />} />        
-            <Route path ="/login" element={<LoginIn />} />
+            <Route path ="/login" element={<Login  login={handleLoginPerson}   loginfail={setLoginFail} />} />
+            <Route path ="/logout" element={<Logout  logout={handleLogoutPerson} />} />
             <Route path ="*" element={<NotFound />} />  
           </Routes>      
         </AllPeopleContext.Provider>

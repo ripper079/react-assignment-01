@@ -33,7 +33,6 @@
 /*Set list so they appear in a row insteed */
 /*Push logo to the right and listitem to the right */
 nav {
-  border: 2px red dotted;
   background-color: lightgray;
   color: black;
   display: flex;

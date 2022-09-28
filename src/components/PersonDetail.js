@@ -43,7 +43,7 @@ const PersonDetail = () => {
                 <div className="col">{ currentPersonDetail._nationality }</div>
                 <div className="col">{ currentPersonDetail._email }</div>                   
             </div>
-            <Link to="/personlist" className="btn btn-success btn-sm">Return to Person List</Link>            
+            <Link to="/personlist" className="btn btn-success btn-sm">Return to Person List</Link>
         </div>
     );
 }

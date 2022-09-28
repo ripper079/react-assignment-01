@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import PersonDataLine from './PersonData';
 
 // Start with UPPERCASE letter when naming react components

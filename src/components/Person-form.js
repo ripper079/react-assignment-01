@@ -39,7 +39,7 @@ function Personform(props) {
           <div className="form-group row">
             <label htmlFor="labelFirstName" className="col-sm-2 col-form-label">First Name</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="inputFirstName" 
+              <input type="text" className="form-control" id="inputFirstName" required  
               value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             </div>
           </div>
@@ -47,7 +47,7 @@ function Personform(props) {
           <div className="form-group row">
             <label htmlFor="labelLastName" className="col-sm-2 col-form-label">Last Name</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="inputLastName" 
+              <input type="text" className="form-control" id="inputLastName" required 
               value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </div>
           </div>
@@ -55,7 +55,7 @@ function Personform(props) {
           <div className="form-group row">
             <label htmlFor="labelAge" className="col-sm-2 col-form-label">Age</label>
             <div className="col-sm-10">
-              <input type="number" className="form-control" id="inputAge" min="0" max="200" 
+              <input type="number" className="form-control" id="inputAge" required min="0" max="200" 
               value={age} onChange={(e) => setAge(e.target.value)} />
             </div>
           </div>
@@ -63,7 +63,7 @@ function Personform(props) {
           <div className="form-group row">
             <label htmlFor="laberNationality" className="col-sm-2 col-form-label">Nationality</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="inputNationality" 
+              <input type="text" className="form-control" id="inputNationality" required 
               value={nationality} onChange={(e) => setNationality(e.target.value)} />
             </div>
           </div>
@@ -71,7 +71,7 @@ function Personform(props) {
           <div className="form-group row">
             <label htmlFor="labelEmail" className="col-sm-2 col-form-label">Email</label>
             <div className="col-sm-10">
-              <input type="email" className="form-control" id="inputEmail" 
+              <input type="email" className="form-control" id="inputEmail" required 
               value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
           </div>
