@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //Implementation of a 'controlled component'
 
 // Start with UPPERCASE letter when naming react components
 //The props is actually a function
 function Personform(props) {    
+    // console.log("Inside Personform react component!");
     const handleCreatePerson = props.addNewPersonToList;
 
     //UseState return an array of 2 elements, hook it up :)
@@ -14,6 +16,9 @@ function Personform(props) {
     const [nationality, setNationality] = useState("Default Nationality");
     const [email, setEmail] = useState("Default@Email.se");
 
+    //New
+    let navigate = useNavigate();
+
     
     const handleSubmit = (e) => {
         //Prevent default refreasing of page
@@ -21,6 +26,8 @@ function Personform(props) {
         //console.log("Before - Handle submit hit!!!");
         handleCreatePerson(firstName, lastName, age, nationality, email);
         //console.log("After - Handle submit hit!!!");
+        //Display the new list
+        navigate("/personlist");
     }
 
     return (

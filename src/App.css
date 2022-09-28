@@ -29,6 +29,46 @@
   color: #61dafb;
 }
 
+
+/*Set list so they appear in a row insteed */
+/*Push logo to the right and listitem to the right */
+nav {
+  border: 2px red dotted;
+  background-color: lightgray;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Remove bullets from links */
+nav ul {
+  list-style: none;
+}
+
+/* Make them in a row */
+nav ul li {
+  display: inline-block;    
+}
+
+/* Removes underline in each link item */
+nav ul li a {
+  text-decoration: none;
+}
+
+/*Hover effect on links */
+nav ul li a:hover {
+  color: yellow;
+}
+
+nav > ul > li {
+  margin: 0px 10px;
+}
+
+.col {
+  margin: 4px;;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

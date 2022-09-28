@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+//Routing support
+import { BrowserRouter } from 'react-router-dom';
+
 // import './index.css';
 // https://create-react-app.dev/docs/adding-bootstrap/
 import 'bootstrap/dist/css/bootstrap.css';
@@ -12,7 +15,11 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* Enables routing in application */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+    
   </React.StrictMode>
 );
 

@@ -1,18 +1,37 @@
 //  import logo from './logo.svg';
 import './App.css';
 
-import { useState } from "react";
+import React from 'react';
+//State management
+import { useState, useContext } from "react";
+//Routing
+import { Link, Route, Routes } from 'react-router-dom';
+
 //User defined
 import Personform from './components/Person-form';
 import ListAllPersons from './components/ListPersons';
+import Home from './components/Home';
+import PersonDetail from './components/PersonDetail';
+import NotFound from './components/NotFound';
+import LoginIn from './components/LoginForm';
 
-
+//Generating 'correct' id numbers
 let idNumber = 2;
+
+
+//Test of new prospect - Need to be just before the function App()
+//Purpose to avoid 'props drilling'
+export const AllPeopleContext = React.createContext();
 
 //Aka 'root component'
 function App() {
-  const titleAssignment = "Assignment 01 - React Introduction";
-  const linkToReact = "https://reactjs.org";
+  // console.log("Inside App react component!");
+  const titleAssignment = "Assignment 02 - React Routes";
+  const linkToReactRouter = "https://reactrouter.com/en/main";
+
+  //Loginstatus and userinfo
+  const [isLoggedIn, setLogin] = useState(false);
+  const [nameOfLoggedIn, setNameOfLoggedIn] = useState(null);
 
   //Hook it up - An array of persons
   const [persons, setPersons] = useState([
@@ -31,11 +50,10 @@ function App() {
         _age : 10,
         _nationality : "Swedish",
         _email : "tuffaste@killen.se"
-    }
-    
+    }    
 ]);
 
-
+//Adding a new person
 function handleCreatePerson(firstName, lastName, age, nationality, email) 
 {
   // console.log("Inside handleCreatePerson...");
@@ -50,38 +68,49 @@ function handleCreatePerson(firstName, lastName, age, nationality, email)
   
   const newPersonsList = persons.map((x) => x);
   newPersonsList.push(aNewPerson);
-  setPersons(newPersonsList);
-  
+  setPersons(newPersonsList);    
 }
 
   return (
     <div className="App">
       <header className="App-header">
-      <a href={linkToReact} target="_blank" rel="noopener noreferrer">React HomePage</a>
-        <p><strong>React</strong> Powered Application!</p>        
-        <p>{ titleAssignment }</p>        
-        {/*
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-         */}
-        
-         
-                 
-      </header>
-      <nav></nav>
       
-      {/* Main Content */}
+      <a href={linkToReactRouter} target="_blank" rel="noopener noreferrer">React Router</a>
+        <p><strong>React</strong> Powered Application!</p>        
+        <p>{ titleAssignment }</p>                                       
+      </header>
+      <nav>
+        <h3>Big Data @ People</h3>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/personlist">List all persons</Link>
+          </li>
+          <li>
+            <Link to="/addperson">Add a person</Link>
+          </li>    
+          <li>
+            {isLoggedIn && <Link to="/logout">Logut</Link>}
+            {!isLoggedIn && <Link to="/login">Login</Link>}
+          </li>       
+        </ul>
+      </nav>
+      
       <main>
-        <div>
-          <h2>All person(s) in the LIST</h2>          
-          <ListAllPersons listOfAllPersons={ persons } />           
-        </div>
-        <div>          
-            <Personform addNewPersonToList={handleCreatePerson} authorApp="Daniel Ojka"/>          
-        </div>
+        <AllPeopleContext.Provider value={persons}>
+          <Routes>           
+            <Route path ="/" element={<Home />} />  
+            <Route path ="/persondetails/:id" element={<PersonDetail />} />
+            <Route path ="/personlist" element={<ListAllPersons listOfAllPersons={ persons } />} />           
+            <Route path ="/addperson" element={<Personform addNewPersonToList={handleCreatePerson} />} />        
+            <Route path ="/login" element={<LoginIn />} />
+            <Route path ="*" element={<NotFound />} />  
+          </Routes>      
+        </AllPeopleContext.Provider>
       </main>
+
     </div>
   );
 
