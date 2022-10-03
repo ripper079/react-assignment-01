@@ -36,7 +36,7 @@ function App() {
   const [isLoginFail, setLoginFail] = useState(false);
 
   //Hook it up - An array of persons
-  //Make SURE to set idNumber correct
+  //Make SURE to set idNumber correctly
   //  - When commented out use idNumber = 0
   //  - When NOT commented out use idNumber = 2
   const [persons, setPersons] = useState([
