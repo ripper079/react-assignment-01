@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useEffect } from 'react';
 import PersonDataLine from './PersonData';
 
 // Start with UPPERCASE letter when naming react components
@@ -5,6 +7,26 @@ import PersonDataLine from './PersonData';
 // Start with UPPERCASE letter when naming react components
 function ListAllPersons(props) {         //Alt 2 
     // console.log("Inside ListAllPersons react component!");
+
+    //Here should we retreive backend data from MVC BETA BETA BETA
+    // useEffect(() => {
+        axios.get("https://127.0.0.1:7095/react/people/2")
+        //axios.get("https://localhost:7095")
+        .then(function (response){
+            //handle success
+            console.log("SUCCESSSSS");
+            console.log(response);
+        })
+        .catch(function (error){
+        //handle error
+            console.log("An error occured during DB fetching");
+        })
+        .then(function() {
+            console.log("Always executed");
+        });
+    // }, [])
+
+
     const persons = props.listOfAllPersons;
     const countPersonInList =  persons.length;
 
