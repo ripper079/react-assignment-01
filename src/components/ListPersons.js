@@ -49,8 +49,8 @@ function ListAllPersons(props) {         //Alt 2
 
     const countPersonInList = personsTableDB.length;
 
-    console.log("Current value for personsTableDB");
-    console.log(personsTableDB);
+    //console.log("Current value for personsTableDB");
+    //console.log(personsTableDB);
 
     if (countPersonInList === 0)
         return (<div>There are no entries</div>);

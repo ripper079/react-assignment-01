@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useContext, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 //All data stored
@@ -12,6 +13,8 @@ const PersonDetail = () => {
     const { id } = useParams();
 
     const [detailOfAPerson, setDetailOfAPerson] = useState({});
+
+    let navigate = useNavigate();   
 
     //Here should we retreive backend data from MVC BETA BETA BETA
     useEffect(() => {
@@ -52,8 +55,24 @@ const PersonDetail = () => {
     //const currentPersonDetail = multiplePeopleData.find(e => e.id == id);
     //console.log(currentPersonDetail);
 
-    //Fetch from db better
+    const removePost= async () => {
+        console.log('DELETE Request');
+        try {
+          const request = await axios.delete(
+            "https://localhost:7095/React/deletepersonfromdb/" + id
+          );
+          console.log(request);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
+    //Fetch from db better
+    const handleClickDeletePerson = () => {
+        console.log("You clicked the delete person. The personid is= " + id);
+        removePost();
+        navigate("/");   
+    }
 
     return (  
         <div className="person-details container-fluid">
@@ -94,7 +113,7 @@ const PersonDetail = () => {
                 <div className="col">{ detailOfAPerson.fullName } </div>                        
                 <div className="col">{ detailOfAPerson.phoneNumber }</div>
                 <div className="col">{ detailOfAPerson.city_Id }</div> 
-                <div className="col btn btn-danger btn-sm">Delete</div>
+                <div className="col btn btn-danger btn-sm" onClick={ handleClickDeletePerson }>Delete</div>
 
             </div>
 

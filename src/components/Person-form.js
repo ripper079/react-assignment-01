@@ -8,25 +8,16 @@ import axios, { Axios } from 'axios';
 //The props is actually a function
 function Personform(props) {    
     // console.log("Inside Personform react component!");
-    const handleCreatePerson = props.addNewPersonToList;
+    // const handleCreatePerson = props.addNewPersonToList;
 
     //UseState return an array of 2 elements, hook it up :)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    // const [age, setAge] = useState(0);
-    // const [nationality, setNationality] = useState("Default Nationality");
-    // const [email, setEmail] = useState("Default@Email.se");
+
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [idCountry, setIdCountry] = useState(0);
-    const [idCity, setIdCity] = useState(0);
-
-    const [carSelect, setCarSelect] = useState("ABC");
-    const carManufacturers = [
-      { id : 1, name: "volvo"},
-      { id : 2, name: "bmw"},
-      { id : 3, name: "fiat"},
-  ];
-
+    // const [idCountry, setIdCountry] = useState(0);
+    // const [idCity, setIdCity] = useState(0);
+    
     //Dropdown list of countries
     const [countries, setCountries] = useState([
       // {
@@ -37,7 +28,7 @@ function Personform(props) {
     //The current selected country, gives back countryid
     const [currentSelectedCountry, SetCurrentSelectedCountry] = useState("");
     //Gives back the index of dropdownlist of country
-    const [indexCurrentSelectedCountry, setIndexCurrentSelectedCountry]=useState(-1);
+    // const [indexCurrentSelectedCountry, setIndexCurrentSelectedCountry]=useState(-1);
 
     //Dropdown list of countries
     const [cities, setCities] = useState([
@@ -49,82 +40,92 @@ function Personform(props) {
     //The current selected country, gives back id
     const [currentSelectedCity, SetCurrentSelectedCity] = useState("");
     
-    let navigate = useNavigate();
+    let navigate = useNavigate();   
+    
+    const addPersonPost = async () => {
+      var payload = {
+        fullName: firstName + " " + lastName,
+        phoneNumber: phoneNumber,
+        CountryId: currentSelectedCountry,
+        cityId: currentSelectedCity
+      };
+      console.log('POST Request - Async');
+      try {
+        const request = await axios.post(
+          'https://localhost:7095/React/addapesontodb',
+          payload
+        );
+        console.log(request);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     //Press button - Send form (POST) data to DB
     const handleSubmit = (e) => {
-        e.preventDefault();        
-        console.log("Currently selected index" + indexCurrentSelectedCountry);
-
-        //The actual data to be send, must match with corresponding action method in MVC app
-        var payload = {
-          fullName: firstName + " " + lastName,
-          phoneNumber: phoneNumber,
-          CountryId: idCountry,
-          cityId: idCity
-        };
-
-        console.log("Payload data");
-        console.log(payload);
+        e.preventDefault();  
         
-        //This is the id of the country!!!! From droplist
-        //console.log(currentSelectedCountry);
+        //Check valid data
+        if (currentSelectedCountry === null || currentSelectedCountry.trim() === ""  || currentSelectedCountry === "disabled selected hidden" ||
+        currentSelectedCity === null || currentSelectedCity.trim() === "" || currentSelectedCity === "disabled selected hidden" ){
+          console.log("Invalid selection for country-dropbox or city-dropbox")
+        }
+        else {
+          addPersonPost();
+          //The actual data to be send, must match with corresponding action method in MVC app
+        // var payload = {
+        //   fullName: firstName + " " + lastName,
+        //   phoneNumber: phoneNumber,
+        //   CountryId: currentSelectedCountry,
+        //   cityId: currentSelectedCity
+        // };
 
-        console.log("Id of selected country");
-        console.log(indexCurrentSelectedCountry);
-                
-        //handleCreatePerson(firstName, lastName, age, nationality, email);
-        //Post to db server insteed
+        // console.log("Payload - (Non async)");
+        // console.log(payload);
 
-        axios.post("https://localhost:7095/React/addapesontodb", payload)        
-        .then(function (response){
-          console.log("Axios post...status=" + response.status);
-          console.log(response);
-        })
-        .catch(function (error){
+        // Post to db server insteed
+        // axios.post("https://localhost:7095/React/addapesontodb", payload)        
+        // .then(function (response){})
+        // .catch(function (error){});
+        }
+                        
 
-        });
-
-        navigate("/personlist");        
+        navigate("/");        
     }
 
     let getDataAndPopulateDropdownList = async () => {
-      console.log("Inside getDataAndPopulateDropdownList...");    
-
-      let firstIdCountryInList = 0;
+      //console.log("Inside getDataAndPopulateDropdownList...");  
 
       //Get data(all countries) from db
       const urlfetchCountries = "https://localhost:7095/React/abcgetallcountries";
       let responseCountries = await axios.get(urlfetchCountries);
-      console.log("Axios responese nr 1");
-      console.log(responseCountries);
-
+      
       var listOfCountriesFromDB = responseCountries.data;      
-      firstIdCountryInList = listOfCountriesFromDB[0].id
-      console.log("First id= " + firstIdCountryInList);
-
+      
       const extractIdAndNameOfCountry = listOfCountriesFromDB.map( (anItem) => {
         return {id : anItem.id, countryName : anItem.countryName};
       });
-
       //Set the droplist data for countries
       setCountries(extractIdAndNameOfCountry);   
 
+      console.log("Id for current selected COUNTRY=" + currentSelectedCountry);
+      console.log("Id for current selected CITY=" + currentSelectedCity);
+           
 
       //Get all data(all cities in a country)
-      const urlfetchCitiesInACountry = "https://localhost:7095/React/abcgetcities/" + firstIdCountryInList;
-      console.log("url to citriesincountry=" + urlfetchCitiesInACountry);
-      let responseCitiesInCountry = await axios.get(urlfetchCitiesInACountry);
-      console.log("Axios responese nr 2");
-      console.log(responseCitiesInCountry);
+      //const idOfCountry = 4;
+      const idOfCountry = currentSelectedCountry;
+      const urlfetchCitiesInACountry = "https://localhost:7095/React/abcgetcities/" + idOfCountry;
 
+      let responseCitiesInCountry = await axios.get(urlfetchCitiesInACountry);
       var listOfCitiesFromDB = responseCitiesInCountry.data;
 
       const extractIdAndNameOfCities = listOfCitiesFromDB.map( (anItem) => {
-          return {id: anItem.id, cityName: anItem.cityName}
-      }); 
+           return {id: anItem.id, cityName: anItem.cityName}
+       }); 
       
-      setCities(extractIdAndNameOfCities);
+       //Set dropdownlist data for cities for a specific country
+       setCities(extractIdAndNameOfCities);
 
     }
 
@@ -132,52 +133,8 @@ function Personform(props) {
     useEffect( () => {
       console.log("useEffect in Personform run...");
       getDataAndPopulateDropdownList();
-
-      // let firstIdCountryInList = -1;
       
-      // const urlfetchCountries = "https://localhost:7095/React/abcgetallcountries";
-      // axios.get(urlfetchCountries)
-      // .then(function (response){
-      //   // handle success
-      //   console.log("Axios success in Personform - For Countries!!!");
-      //   console.log(response);
-
-      //   var listOfCountriesFromDB = response.data;
-      //   firstIdCountryInList = listOfCountriesFromDB[0].id
-      //   console.log("First id= " + firstIdCountryInList);
-  
-      //   const extractIdAndNameOfCountry = listOfCountriesFromDB.map( (anItem) => {
-      //     return {id : anItem.id, countryName : anItem.countryName};
-      //   });
-        
-      //   //Set the droplist data for countries
-      //   setCountries(extractIdAndNameOfCountry);        
-      // })
-      // .catch(function (error){
-      //   //Handle error
-      // })
-      // .then(function(){
-      //   //always executes - ie cleanup resoureces
-      // });
-
-      // const urlfetchCitiesInACountry = "https://localhost:7095/React/abcgetcities/" + firstIdCountryInList;
-      // //const urlfetchCitiesInACountry = "https://localhost:7095/React/getcities/" + "2";
-      // console.log("fetchstring=" +urlfetchCitiesInACountry);
-      // axios.get(urlfetchCitiesInACountry)
-      // .then(function (response){
-      //     // handle success
-      //     console.log("Axios success in Personform - For Cities!!!");
-      //     console.log(response);
-      // })
-      // .catch(function (error){
-      //   //Handle error
-      // })
-      // .then(function(){
-      //   //always executes - ie cleanup resoureces
-      // });
-
-
-    }, []);
+    }, [currentSelectedCountry, currentSelectedCity]);
 
     return (
         
@@ -209,7 +166,7 @@ function Personform(props) {
             </div>
           </div>
 
-          <div className="form-group row">
+          {/* <div className="form-group row">
             <label htmlFor="labelIdCountry" className="col-sm-2 col-form-label">ID Country(Testing)</label>
             <div className="col-sm-10">
               <input type="number" className="form-control" id="inputIdCountry" required min="0" max="200" 
@@ -223,10 +180,10 @@ function Personform(props) {
               <input type="number" className="form-control" id="inputIdCity" required min="0" max="200" 
               value={idCity} onChange={(e) => setIdCity(e.target.value)} />
             </div>
-          </div>
+          </div> */}
 
 
-          <div className="form-group row">
+          {/* <div className="form-group row">
             <label htmlFor="labelCarSelect" className="col-sm-2 col-form-label">Car Select(Testing)</label>
             <div className="col-sm-10">
               <select name="cars" className="form-control" id="inputCarsSelected" required  
@@ -237,20 +194,18 @@ function Personform(props) {
                 })}                                        
               </select>
             </div>
-          </div>
+          </div> */}
 
 
           <div className="form-group row">
             <label htmlFor="labelCountrySelect" className="col-sm-2 col-form-label">Country Select Droplist</label>
             <div className="col-sm-10">
               <select name="allcountries" className="form-control" id="inputCountryiesSelected" required  
-              value={currentSelectedCountry} onChange={(e) => {
-                                                                SetCurrentSelectedCountry(e.target.value);
-                                                                setIndexCurrentSelectedCountry(e.target.selectedIndex);
-                                                              }}>
+              value={currentSelectedCountry} onChange={(e) => SetCurrentSelectedCountry(e.target.value)}>                                                                                                                                                                                                           
+                <option value="disabled selected hidden">SELECT a COUNTRY</option>
                 {
                   countries.map(function(aCountry){
-                      return <option key={aCountry.id} value={aCountry.id}> {aCountry.countryName} - COunTRy</option>
+                      return <option key={aCountry.id} value={aCountry.id}>{aCountry.countryName}</option>
                 })}                                        
               </select>
             </div>
@@ -262,16 +217,16 @@ function Personform(props) {
             <div className="col-sm-10">
               <select name="allcities" className="form-control" id="inputCitiesSelected" required  
               value={currentSelectedCity} onChange={(e) => SetCurrentSelectedCity(e.target.value)}>
+                <option value="disabled selected hidden">Select a City[After choosing a country]</option>
                 {
                   cities.map(function(aCity){
-                      return <option key={aCity.id} value={aCity.id}> {aCity.cityName} - CIty</option>
+                      return <option key={aCity.id} value={aCity.id}>{aCity.cityName}</option>
                 })}                                        
               </select>
             </div>
           </div>
-
-          
-          {/* <input type="submit" value="Add a Person" className="btn btn-primary" /> */}
+          <div>Selected country id {currentSelectedCountry}</div>
+          <div>Selected city id {currentSelectedCity}</div>
           <input type="submit" value="Add a Person to ALL DBs" className="btn btn-primary" />
         </form>        
     )};
