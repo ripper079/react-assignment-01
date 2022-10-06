@@ -27,7 +27,7 @@ export const AllPeopleContext = React.createContext();
 //Aka 'root component'
 function App() {
   // console.log("Inside App react component!");
-  const titleAssignment = "Assignment 02 - React Routes";
+  const titleAssignment = "Assignment 03 - React Single Page CMS";
   const linkToReactRouter = "https://reactrouter.com/en/main";
 
   //Loginstatus and userinfo

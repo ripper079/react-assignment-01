@@ -1,21 +1,39 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PersonDataLine from './PersonData';
 
 // Start with UPPERCASE letter when naming react components
 //const ListAllPersons = () => {    //Alt 1
 // Start with UPPERCASE letter when naming react components
 function ListAllPersons(props) {         //Alt 2 
-    // console.log("Inside ListAllPersons react component!");
+    // console.log("Inside ListAllPersons react component!");    
+    const [personsTableDB, SetPersonsTableDB] = useState([]);
+
 
     //Here should we retreive backend data from MVC BETA BETA BETA
-    // useEffect(() => {
-        axios.get("https://127.0.0.1:7095/react/people/2")
+    useEffect(() => {
+        console.log("useEffect in ListAllPersons...");
+        const mockIdOfPerson = 6;
+        const urlString = "https://localhost:7095/React/getallpeople";
+        axios.get(urlString)
+        //axios.get("https://localhost:7095/React/people/3")
         //axios.get("https://localhost:7095")
         .then(function (response){
-            //handle success
-            console.log("SUCCESSSSS");
-            console.log(response);
+            //handle success      
+            console.log("Listing all people from db");
+            //Retrive data from db
+            //save it in a list            
+            var listOfPersons = response.data;   
+            //console.log(response);
+            //console.log("Status= " + response.status);            
+            //Copy array
+            const copyAllPersonsFromTable = listOfPersons.map((x) => x);
+
+            // copyAllPersons.forEach(oneperson => {
+            //     console.log(oneperson.fullName);
+            // });
+            SetPersonsTableDB(copyAllPersonsFromTable);
+            
         })
         .catch(function (error){
         //handle error
@@ -24,11 +42,15 @@ function ListAllPersons(props) {         //Alt 2
         .then(function() {
             console.log("Always executed");
         });
-    // }, [])
+    }, [])
 
+    // const persons = props.listOfAllPersons;
+    // const countPersonInList =  persons.length;    
 
-    const persons = props.listOfAllPersons;
-    const countPersonInList =  persons.length;
+    const countPersonInList = personsTableDB.length;
+
+    console.log("Current value for personsTableDB");
+    console.log(personsTableDB);
 
     if (countPersonInList === 0)
         return (<div>There are no entries</div>);
@@ -36,36 +58,27 @@ function ListAllPersons(props) {         //Alt 2
     return (        
         <div className="container-fluid">
             <div className="row">
-                <div className="col"><strong>List ID</strong></div>
+                {/* <div className="col"><strong>List ID</strong></div>
                 <div className="col"><strong>FirstName</strong></div>
-                <div className="col"><strong>LastName</strong></div>
-                {/* <div className="col"><strong>Age</strong></div>
-                <div className="col"><strong>Nationality</strong></div>
-                <div className="col"><strong>Email</strong></div>   */}
-                {/* Assignment react routes               */}
+                <div className="col"><strong>LastName</strong></div>                
+                <div className="col"><strong>Action</strong></div> */}
+
+
+                <div className="col"><strong>IdPerson</strong></div>
+                <div className="col"><strong>FullName</strong></div>
+                <div className="col"><strong>PhoneNumber</strong></div>                
                 <div className="col"><strong>Action</strong></div>
             </div>
 
                     
-            {persons.map((e) => ( 
+            {/* {persons.map((e) => (                 
+                <PersonDataLine key={e.id} apersonrecord={e} />  
+            ))}     */}
 
-                // Mini bug - each child have a unique prop, assignment requirement
-                // <PersonDataLine apersonrecord={e} />
-                <PersonDataLine key={e.id} apersonrecord={e} />
+            {personsTableDB.map((e) => (                 
+                <PersonDataLine key={e.idPerson} apersonrecord={e} />  
+            ))}  
 
-                
-                //Maybe this better??? Toogle between 2 versions
-                // <div className="row" key={e.id}>
-                //         <div className="col">{ e.id } </div>
-                //         <div className="col">{ e._firstName } </div>
-                //         <div className="col">{ e._secondName }</div>
-                //         <div className="col">{ e._age }</div>
-                //         <div className="col">{ e._nationality }</div>
-                //         <div className="col">{ e._email }</div>                                            
-                // </div>
-
-
-            ))}                                                                                    
        </div>               
     )};
 
