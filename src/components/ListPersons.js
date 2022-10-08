@@ -52,6 +52,24 @@ function ListAllPersons(props) {         //Alt 2
     //console.log("Current value for personsTableDB");
     //console.log(personsTableDB);
 
+    const handleClickSortByName = () => {
+        console.log("Listing people by FullName");
+        //Copy existing data
+        const sortedByFullNameList = personsTableDB.map((x) => x);
+        //Sort the data        
+        sortedByFullNameList.sort((a, b) =>{
+            if (a.fullName < b.fullName){
+                return -1;
+            }
+            if (a.fullName > b.fullName){
+                return 1;
+            }
+            return 0;
+        });
+        SetPersonsTableDB(sortedByFullNameList);
+    }
+
+
     if (countPersonInList === 0)
         return (<div>There are no entries</div>);
 
@@ -79,6 +97,7 @@ function ListAllPersons(props) {         //Alt 2
                 <PersonDataLine key={e.idPerson} apersonrecord={e} />  
             ))}  
 
+            <div className="btn btn-primary btn-sm" onClick={ handleClickSortByName }>Sort table by Full Name</div>                    
        </div>               
     )};
 

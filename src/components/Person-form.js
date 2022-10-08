@@ -13,11 +13,8 @@ function Personform(props) {
     //UseState return an array of 2 elements, hook it up :)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-
     const [phoneNumber, setPhoneNumber] = useState("");
-    // const [idCountry, setIdCountry] = useState(0);
-    // const [idCity, setIdCity] = useState(0);
-    
+  
     //Dropdown list of countries
     const [countries, setCountries] = useState([
       // {
@@ -26,9 +23,7 @@ function Personform(props) {
       // }
     ]);
     //The current selected country, gives back countryid
-    const [currentSelectedCountry, SetCurrentSelectedCountry] = useState("");
-    //Gives back the index of dropdownlist of country
-    // const [indexCurrentSelectedCountry, setIndexCurrentSelectedCountry]=useState(-1);
+    const [currentSelectedCountry, SetCurrentSelectedCountry] = useState("");    
 
     //Dropdown list of countries
     const [cities, setCities] = useState([
@@ -36,20 +31,29 @@ function Personform(props) {
       //   id : 4,
       //   cityName : "Russia"
       // }
-    ]);
+    ]);  
     //The current selected country, gives back id
     const [currentSelectedCity, SetCurrentSelectedCity] = useState("");
+
+    //New - Dropdown list of lanuages
+    const [languages, setLanguages] = useState([]);
+    //Currently selected language
+    const [currentSelectedLanguage, setCurrentSelectedLanguage] = useState("");
+
     
     let navigate = useNavigate();   
     
+    //The actual data to send
     const addPersonPost = async () => {
       var payload = {
         fullName: firstName + " " + lastName,
         phoneNumber: phoneNumber,
         CountryId: currentSelectedCountry,
-        cityId: currentSelectedCity
+        cityId: currentSelectedCity,
+        languageId : currentSelectedLanguage
       };
-      console.log('POST Request - Async');
+      console.log('POST Request - Async - payload');
+      console.log(payload);
       try {
         const request = await axios.post(
           'https://localhost:7095/React/addapesontodb',
@@ -67,7 +71,8 @@ function Personform(props) {
         
         //Check valid data
         if (currentSelectedCountry === null || currentSelectedCountry.trim() === ""  || currentSelectedCountry === "disabled selected hidden" ||
-        currentSelectedCity === null || currentSelectedCity.trim() === "" || currentSelectedCity === "disabled selected hidden" ){
+        currentSelectedCity === null || currentSelectedCity.trim() === "" || currentSelectedCity === "disabled selected hidden" || 
+        currentSelectedLanguage === null || currentSelectedLanguage.trim() === "" || currentSelectedLanguage === "disabled selected hidden"){
           console.log("Invalid selection for country-dropbox or city-dropbox")
         }
         else {
@@ -127,6 +132,19 @@ function Personform(props) {
        //Set dropdownlist data for cities for a specific country
        setCities(extractIdAndNameOfCities);
 
+       //Languages
+       const urlfetchAllLanguages = "https://localhost:7095/React/abcgetalllanguages";
+       let responseAllLanguages = await axios.get(urlfetchAllLanguages);
+       var listOfLanguagesFromDB = responseAllLanguages.data;
+       console.log("All languages fetched");
+       console.log(listOfLanguagesFromDB);
+
+       const extractIdAndNameOfLanguages = listOfLanguagesFromDB.map( (anItem) => {
+        return {id: anItem.id, name: anItem.name}
+        });
+
+        setLanguages(extractIdAndNameOfLanguages);
+
     }
 
     // Runs EVERY time the component renders - Beware of updateing the state of the component - continues loop of renders may occur
@@ -134,7 +152,7 @@ function Personform(props) {
       console.log("useEffect in Personform run...");
       getDataAndPopulateDropdownList();
       
-    }, [currentSelectedCountry, currentSelectedCity]);
+    }, [currentSelectedCountry, currentSelectedCity, currentSelectedLanguage]);
 
     return (
         
@@ -165,38 +183,7 @@ function Personform(props) {
               value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
             </div>
           </div>
-
-          {/* <div className="form-group row">
-            <label htmlFor="labelIdCountry" className="col-sm-2 col-form-label">ID Country(Testing)</label>
-            <div className="col-sm-10">
-              <input type="number" className="form-control" id="inputIdCountry" required min="0" max="200" 
-              value={idCountry} onChange={(e) => setIdCountry(e.target.value)} />
-            </div>
-          </div>
-
-          <div className="form-group row">
-            <label htmlFor="labelIdCity" className="col-sm-2 col-form-label">ID City(Testing)</label>
-            <div className="col-sm-10">
-              <input type="number" className="form-control" id="inputIdCity" required min="0" max="200" 
-              value={idCity} onChange={(e) => setIdCity(e.target.value)} />
-            </div>
-          </div> */}
-
-
-          {/* <div className="form-group row">
-            <label htmlFor="labelCarSelect" className="col-sm-2 col-form-label">Car Select(Testing)</label>
-            <div className="col-sm-10">
-              <select name="cars" className="form-control" id="inputCarsSelected" required  
-              value={carSelect} onChange={(e) => setCarSelect(e.target.value)}>
-                {
-                  carManufacturers.map(function(aCarManuFact){
-                      return <option key={aCarManuFact.id} value={aCarManuFact.name}> {aCarManuFact.name} - Bil</option>
-                })}                                        
-              </select>
-            </div>
-          </div> */}
-
-
+                 
           <div className="form-group row">
             <label htmlFor="labelCountrySelect" className="col-sm-2 col-form-label">Country Select Droplist</label>
             <div className="col-sm-10">
@@ -217,7 +204,7 @@ function Personform(props) {
             <div className="col-sm-10">
               <select name="allcities" className="form-control" id="inputCitiesSelected" required  
               value={currentSelectedCity} onChange={(e) => SetCurrentSelectedCity(e.target.value)}>
-                <option value="disabled selected hidden">Select a City[After choosing a country]</option>
+                <option value="disabled selected hidden">SELECT a CITY</option>
                 {
                   cities.map(function(aCity){
                       return <option key={aCity.id} value={aCity.id}>{aCity.cityName}</option>
@@ -225,8 +212,25 @@ function Personform(props) {
               </select>
             </div>
           </div>
+
+          <div className="form-group row">
+            <label htmlFor="labelCitySelect" className="col-sm-2 col-form-label">Select a Language</label>
+            <div className="col-sm-10">
+              <select name="alllanguagess" className="form-control" id="inputLanguagesSelected" required  
+              value={currentSelectedLanguage} onChange={(e) => setCurrentSelectedLanguage(e.target.value)}>
+                <option value="disabled selected hidden">SELECT a Language</option>
+                {
+                  languages.map(function(aLanguage){
+                      return <option key={aLanguage.id} value={aLanguage.id}>{aLanguage.name}</option>
+                })}                                        
+              </select>
+            </div>
+          </div>
+
+          <div><strong>DEBUG INFO</strong></div>
           <div>Selected country id {currentSelectedCountry}</div>
           <div>Selected city id {currentSelectedCity}</div>
+          <div>Selected language id {currentSelectedLanguage}</div>
           <input type="submit" value="Add a Person to ALL DBs" className="btn btn-primary" />
         </form>        
     )};
